@@ -20,7 +20,7 @@ class GaussianProcessRgressor:
         self.y = None
 
     def fit(self, X, y):
-        self.prior_mean, self.prior_cov= self.multivariate_norm_prior(X)
+        self.prior_mean, self.prior_cov = self.multivariate_norm_prior(X)
         self.y = y
         self.X = X
 
