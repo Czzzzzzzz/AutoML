@@ -38,10 +38,14 @@ class GaussianProcessRgressor:
         return self.post_mean, self.post_cov
 
     def multivariate_norm_prior(self, xs):
+        """
+        Initialize the prior. The mean is, by default, set to zeros.
+        """
+
         D = xs.shape[0]
 
         if self.kernel == "gaussian_kernel":
-            cov = Kernel.gaussian_kernel(xs, xs, self.sigma, self.l)
+            cov = Kernel.gaussian_kernel(xs, sigma=self.sigma, l=self.l)
         else:
             cov = np.eye(D)
 
@@ -49,15 +53,21 @@ class GaussianProcessRgressor:
 
         return mean, cov
 
+    """
+    ============================================    
+    Following functions are used for test cases.
+    ============================================
+    """
+
     def sample_from_prior(self, mean, covariance):
         return np.random.multivariate_normal(mean, covariance)
 
     def plot_unit_gaussian_samples(self, D, n_sample):
         mean = np.array([i for i in range(D)])
-        xs = np.linspace(0, 1, D)
+        xs = np.linspace(0, 1, D).reshape((-1, 1))
 
         if self.kernel == "gaussian_kernel":
-            cov = Kernel.gaussian_kernel(xs, xs, self.sigma, self.l)
+            cov = Kernel.gaussian_kernel(xs, sigma=self.sigma, l=self.l)
         else:
             cov = np.eye(D)
 
@@ -66,8 +76,3 @@ class GaussianProcessRgressor:
             plt.plot(xs, ys)
 
         plt.show()
-
-if __name__ == "__main__":
-
-    gp = GaussianProcessRgressor()
-    gp.fit()
